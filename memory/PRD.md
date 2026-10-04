@@ -1,4 +1,41 @@
-# MART — Optional Agent Studio
+# MART — Creator-Configured Ecosystem Agents
+
+## LATEST CORRECTION — 2026-10-04 (supersedes the old Agent Studio design below)
+User: "Lu salah bro ... penempatan agent itu bukan jadi sub menu di token hub, tapi jadi breakdown dengan chart dll ... semua di tentukan oleh kreator pas isi form token launch ... add token yg bukan launch di mart, juga ada form pilihan agent ... masukan fitur agent itu di landing page ... jangan gunakan kata kata seperti mind".
+
+User confirmed: agent OPTIONAL in both Launch/Add Token. Additional request: after finishing, propose compute system so agents can operate like AgencyPad. Previous no-live-AI scope still applies.
+
+### Corrected requirements and implementation
+- Removed standalone agent page and all agent tabs/sub-tabs/public model editing. Legacy `/token/:mint/agent` redirects to the canonical token page.
+- Main token page now integrates three columns: profile/activity, live DexScreener chart and trade links, compute/treasury. Original four ecosystem tabs remain below the overview. No extra agent tab.
+- No configured agent means an honest empty state, not a default pseudo-agent. Public profile excludes private operating instructions. No browser draft is ever displayed as a token's real profile.
+- Shared optional AgentCreatorFields inside Launch and a full Add Token form/page. Both default off; inline provider/model options, persona, mission, private instructions, capabilities, creativity and proposed allocation.
+- Launch form accessible before wallet sign-in; upload/submission still require wallet. Existing Pump.fun transaction construction/signing/confirmation retained. Private agent snapshot saved at prepare; attached only after exact successful finalized transaction verification. No agent details leaked in public token metadata.
+- No-agent imports remain public; imports with agent require signed wallet session and fresh Metaplex update-authority check BEFORE agent writes. Reimports never delete or replace an existing configured agent. Attachment idempotent under unique token index.
+- Finalized original MART launch provenance is sufficient for its own chosen profile attachment; it does NOT claim that program-controlled metadata authority belongs to the creator. External renounced/program-controlled tokens need a different future verification path; current import fails closed.
+- Landing now explains optional creator-configured agents and links to Launch/Add Token. MART branding retained; forbidden copied term removed from app copy.
+- Added `/docs/ecosystem-agents`, `/docs/agent-compute` and `/app/memory/COMPUTE_PROPOSAL.md`. Compute roadmap only: hosted APIs + separate per-token usage ledger + creator topups first + bounded jobs + deterministic financial policy, no actual runtime/fee custody activated.
+- Shared schema `/app/backend/agent_schema.py`; new attachment service in `agents.py`; creator snapshots integrated into `hubs.py` and `launch.py`. Auth core and transactions/send unchanged.
+- Production build and initial external APIs passed. Desktop/mobile screenshots of Hub/forms/landing: zero overflow. New comprehensive correction tests pending.
+- Found original DexScreener embed returns "No data here". Replaced integrated embed with real native candlestick+volume chart (lightweight-charts v5) backed by keyless GeckoTerminal OHLCV; four intervals, manual refresh, 60s Mongo cache, coalesced upstream access, explicit error/backoff, correct USD/mint orientation, public attribution. Kept DexScreener snapshot and external chart links. 160 real candles verified externally. Fixed chart locale to en-US because browser reports invalid en-US@posix.
+
+### Current backlog
+- P0: none outstanding in agreed correction scope; comprehensive verification completed below.
+- P1 requested next: choose and implement actual compute funding/runtime only after user approves next phase/integrations.
+- P2 optional enhancement: compute budget estimator; public run receipts and creator pause controls in live-runtime phase.
+
+### Correction verification completed — 2026-10-04
+- `/app/test_reports/iteration_5.json`: 13/13 correction backend tests passed; UI Launch/Add Token optional form, integrated chart, native chart interval/refresh, no Agent submenu, legacy route redirect, landing/docs and entry points passed.
+- Iteration5 flagged a literal `/token/FARTCOIN` test URL due shorthand in my test brief. Actual user/source contract is mint-only canonical identity. `/token/9BB6NFEcjBCtnNLFko2FqVQBq8HHM13kCyYcdQbgpump` works; no ticker alias should be added. Iteration6 explicitly resolves this false positive.
+- `/app/test_reports/iteration_6.json`: 10/10 additional executed isolated backend tests passed: private launch snapshot, exclusion from metadata, finalized exact-hash confirm gating, original creator provenance, idempotent attachment, rejected failed/unfinalized/wrong-wallet/wrong-hash cases, authority-only import, immutable conflict, no-agent non-destructive import, public private-field exclusion.
+- Configured-profile browser rendering (60-character unbroken name and long mission) tested at 1920x800 and 390x844 using TEST-ONLY response interception, leaving real price chart untouched. No runtime mock or permanent profile fixture created. This is presentation coverage, not a claim of executing a real mainnet launch.
+- Real native chart rendered candles/volume; mobile evidence `/app/test_reports/iteration5-native-chart-mobile-390x844.jpeg`. Desktop and mobile no horizontal overflow. Main-agent inspected mobile evidence and desktop candlesticks.
+- Production build successful; only inherited upstream source-map warnings. No mainnet transaction submitted; authorized launch/authority-success paths use isolated fixtures. Real anonymous imports, rejected non-authority imports, public token/profile data and OHLCV exercised through external preview.
+- Latest test reports list no outstanding app bugs. Old Agent Studio tests reflect superseded UX and are historical, not current acceptance criteria.
+- Runtime AI, credits billing, scheduler, agent financial actions remain intentionally OFF. Current work is correction/configuration + requested compute proposal.
+
+---
+## Historical first implementation (SUPERSEDED by latest correction above)
 
 ## Original problem statement
 Bro gue mau lu clone github repo ini semuanya https://market-pulse-2620.preview.emergentagent.com/

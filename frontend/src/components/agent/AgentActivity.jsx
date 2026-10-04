@@ -1,7 +1,0 @@
-import { Activity, SlidersHorizontal, ArrowUpRight } from 'lucide-react';
-
-export const AgentActivity = ({ entries, compact = false, onShowAll }) => <section className={`agent-activity ${compact ? 'compact' : ''}`} data-testid="agent-activity-feed">
-  <div className="agent-section-heading"><div><span className="agent-overline">THE RECORD</span><h2>Agent activity</h2></div><span className="agent-neutral-badge" data-testid="agent-activity-count">{entries.length} RECORDS</span></div>
-  {entries.length ? <div className="agent-activity-list">{entries.slice(0, compact ? 3 : 30).map(entry => <div className="agent-activity-row" key={entry.id} data-testid={`agent-activity-${entry.id}`}><span className="agent-log-icon"><SlidersHorizontal size={14} /></span><div><strong>{entry.title}</strong><p>{entry.local ? 'Browser draft · Only visible to you' : 'Public profile · Configuration update'}</p></div><time dateTime={entry.at}>{new Date(entry.at).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</time></div>)}</div> : <div className="agent-activity-empty" data-testid="agent-activity-empty"><Activity size={28} /><h3>A fresh start.</h3><p>No agent activity yet.</p><span>AI execution is off. Profile updates will appear here.</span></div>}
-  {compact && entries.length > 3 && <button className="text-link" data-testid="agent-view-all-activity" onClick={onShowAll}>View all activity<ArrowUpRight size={13} /></button>}
-</section>;

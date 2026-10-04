@@ -1,13 +1,15 @@
 import os, time, asyncio
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Header
 from pydantic import BaseModel, Field
 from pymongo.errors import DuplicateKeyError
 from core import db, user, now, address
 from chain import mint_info, metadata, market_data, current_authority, rpc, TOKEN_PROGRAM, TOKEN_2022, http
+from agent_schema import AgentProfile
 
 router = APIRouter(prefix='/api')
 class AddToken(BaseModel):
     address: str
+    agent: AgentProfile | None = None
 
 async def get_hub(mint):
     hub = await db.hubs.find_one({'address': mint}, {'_id': 0})
@@ -26,9 +28,20 @@ async def add_hub(mint):
     return hub, True
 
 @router.post('/tokens')
-async def add(body: AddToken):
-    hub, created = await add_hub(body.address.strip())
-    return {'token': hub, 'created': created}
+async def add(body: AddToken, authorization: str = Header('')):
+    mint = address(body.address.strip())
+    wallet = None
+    if body.agent is not None:
+        wallet = await user(authorization)
+        await current_authority(mint, wallet)
+        existing = await db.agents.find_one({'token': mint}, {'_id': 0})
+        if existing and (existing['profile'] != body.agent.model_dump() or existing.get('updated_by') != wallet or existing.get('source') != 'verified-authority'):
+            raise HTTPException(409, 'This token already has an agent. Adding it again will not replace its configuration.')
+    hub, created = await add_hub(mint)
+    if body.agent is not None:
+        from agents import attach_profile
+        await attach_profile(mint, body.agent, wallet, 'verified-authority')
+    return {'token': hub, 'created': created, 'agent_configured': body.agent is not None}
 
 @router.get('/tokens')
 async def tokens(q: str = '', sort: str = 'trending', verified: bool = False):

@@ -9,6 +9,7 @@ import Explore from './pages/Explore';
 import Hub from './pages/Hub';
 import Events, { EventDetail } from './pages/Events';
 import Launch from './pages/Launch';
+import AddToken from './pages/AddToken';
 import Wallet from './pages/Wallet';
 import Docs from './pages/Docs';
 import { Empty } from './components/Kit';
@@ -34,5 +35,5 @@ const Scroll = () => {
   }, [pathname, hash, anchorVisit]);
   return null;
 };
-function App() { return <BrowserRouter><WalletProvider><Scroll /><Header /><Routes><Route path="/" element={<Home />} /><Route path="/explore" element={<Explore />} /><Route path="/token/:address/:tab?" element={<Hub />} /><Route path="/events" element={<Events />} /><Route path="/events/:id" element={<EventDetail />} /><Route path="/launch" element={<Launch />} /><Route path="/wallet" element={<Wallet />} /><Route path="/docs/:topic?" element={<Docs />} /><Route path="*" element={<main className="container page"><Empty title="This corner of MART doesn’t exist." text="Let’s get you back to the ecosystem."><Link className="btn btn-primary" to="/" data-testid="not-found-home">Back to MART</Link></Empty></main>} /></Routes><Footer /><Toaster theme="dark" position="bottom-right" richColors closeButton /></WalletProvider></BrowserRouter>; }
+function App() { return <BrowserRouter><WalletProvider><Scroll /><Header /><Routes><Route path="/" element={<Home />} /><Route path="/explore" element={<Explore />} /><Route path="/token/:address/:tab?" element={<Hub />} /><Route path="/events" element={<Events />} /><Route path="/events/:id" element={<EventDetail />} /><Route path="/launch" element={<Launch />} /><Route path="/add-token" element={<AddToken />} /><Route path="/wallet" element={<Wallet />} /><Route path="/docs/:topic?" element={<Docs />} /><Route path="*" element={<main className="container page"><Empty title="This corner of MART doesn’t exist." text="Let’s get you back to the ecosystem."><Link className="btn btn-primary" to="/" data-testid="not-found-home">Back to MART</Link></Empty></main>} /></Routes><Footer /><Toaster theme="dark" position="bottom-right" richColors closeButton /></WalletProvider></BrowserRouter>; }
 export default App;

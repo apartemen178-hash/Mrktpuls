@@ -12,6 +12,7 @@ from market import router as market_router
 from launch import router as launch_router
 from agents import router as agents_router
 from storage import init_storage
+from charts import router as charts_router
 
 logging.basicConfig(level=logging.INFO)
 
@@ -19,6 +20,7 @@ logging.basicConfig(level=logging.INFO)
 async def lifespan(app):
     await db.hubs.create_index('address', unique=True)
     await db.agents.create_index('token', unique=True)
+    await db.ohlcv_cache.create_index('key', unique=True)
     await db.sessions.create_index('expires', expireAfterSeconds=0)
     await db.nonces.create_index('expires', expireAfterSeconds=0)
     await db.orders.create_index('signature', unique=True, sparse=True)
@@ -34,7 +36,7 @@ async def lifespan(app):
 
 app = FastAPI(title='MART', lifespan=lifespan)
 app.add_middleware(CORSMiddleware, allow_origins=os.environ['CORS_ORIGINS'].split(','), allow_credentials=False, allow_methods=['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'], allow_headers=['Content-Type', 'Authorization'])
-for router in [core_router, hubs_router, social_router, market_router, launch_router, agents_router]: app.include_router(router)
+for router in [core_router, hubs_router, social_router, market_router, launch_router, agents_router, charts_router]: app.include_router(router)
 hits = defaultdict(deque)
 
 @app.middleware('http')

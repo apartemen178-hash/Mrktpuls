@@ -1,0 +1,12 @@
+import { Bot, Cpu, ShieldCheck, Activity } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { providerMark } from './agentData';
+
+export const AgentProfileSummary = ({ agent }) => {
+  const profile = agent?.profile;
+  return <aside className="token-agent-summary" data-testid="hub-agent-breakdown-card">
+    <div className="token-panel-title"><span><Bot size={15} /> ECOSYSTEM AGENT</span><small data-testid="hub-agent-status">{profile ? 'CONFIGURED' : 'NOT ATTACHED'}</small></div>
+    {profile ? <><div className="token-agent-identity"><span className={`provider-mark provider-${agent.model?.provider?.toLowerCase()}`}>{providerMark(agent.model?.provider)}</span><div><h2 data-testid="hub-agent-name">{profile.name}</h2><span data-testid="hub-agent-role">{profile.role}</span></div></div><div className="token-agent-model"><Cpu size={13} /><strong data-testid="hub-agent-model-badge">{agent.model?.name || profile.model_id}</strong><span data-testid="hub-agent-provider-badge">{agent.model?.provider}</span></div><span className="token-panel-eyebrow">CREATOR'S MISSION</span><p className="token-agent-mission" data-testid="hub-agent-mission">{profile.mission}</p><div className="token-agent-posture" data-testid="hub-agent-posture"><ShieldCheck size={13} />{profile.risk} · Human-approved actions</div></> : <div className="token-agent-unconfigured" data-testid="hub-agent-unconfigured"><span><Bot size={30} /></span><h2>No agent attached.</h2><p>This token's market and community remain independent. An agent is an optional addition.</p><span>Configured by the creator during Launch or Add Token.</span><Link className="text-link" to="/docs/ecosystem-agents" data-testid="hub-agent-guide">About ecosystem agents ↗</Link></div>}
+    <div className="token-agent-activity"><div className="token-panel-title"><span><Activity size={13} /> ACTIVITY</span><small data-testid="hub-agent-activity-count">{agent?.activity?.length || 0} RECORDS</small></div>{agent?.activity?.length ? agent.activity.slice(0, 3).map(item => <div className="token-agent-log" key={item.id} data-testid={`hub-agent-log-${item.id}`}><i /><div><strong>{item.title}</strong><time dateTime={item.at}>{new Date(item.at).toLocaleString()}</time></div></div>) : <p data-testid="hub-agent-activity-empty">No agent runs or decisions yet.</p>}<span className="token-panel-footnote" data-testid="hub-agent-execution">AI execution is not connected.</span></div>
+  </aside>;
+};

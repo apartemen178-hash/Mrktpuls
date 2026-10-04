@@ -6,6 +6,7 @@ from solders.transaction import VersionedTransaction
 from core import db, user, uid, now, address
 from chain import http, rpc
 from hubs import add_hub
+from agent_schema import AgentProfile
 
 router = APIRouter(prefix='/api')
 class LaunchInput(BaseModel):
@@ -20,13 +21,14 @@ class LaunchInput(BaseModel):
     mint: str
     amount: float = Field(default=0, ge=0, le=10)
     slippage: int = Field(default=10, ge=1, le=50)
+    agent: AgentProfile | None = None
 
 @router.post('/launch/prepare')
 async def prepare(body: LaunchInput, wallet: str = Depends(user)):
     address(body.mint)
     if not body.image.startswith(os.environ['APP_ORIGIN'] + '/api/images/'): raise HTTPException(422, 'Upload your token logo first.')
     mid = uid()
-    meta = body.model_dump(exclude={'mint', 'amount', 'slippage'})
+    meta = body.model_dump(exclude={'mint', 'amount', 'slippage', 'agent'})
     await db.metadata.insert_one({'id': mid, 'metadata': meta})
     uri = f'{os.environ["APP_ORIGIN"]}/api/metadata/{mid}'
     try:
@@ -37,7 +39,7 @@ async def prepare(body: LaunchInput, wallet: str = Depends(user)):
         signers = keys[:tx.message.header.num_required_signatures]
         if keys[0] != wallet or set(signers) != {wallet, body.mint}: raise ValueError('Unexpected launch signers. Request was blocked.')
     except Exception as exc: raise HTTPException(502, str(exc)[:250] or 'Launch provider is unavailable.')
-    doc = {'id': uid(), 'wallet': wallet, 'mint': body.mint, 'metadata': meta, 'message_hash': hashlib.sha256(bytes(tx.message)).hexdigest(), 'created_at': now().isoformat(), 'status': 'prepared'}
+    doc = {'id': uid(), 'wallet': wallet, 'mint': body.mint, 'metadata': meta, 'agent_profile': body.agent.model_dump() if body.agent else None, 'message_hash': hashlib.sha256(bytes(tx.message)).hexdigest(), 'created_at': now().isoformat(), 'status': 'prepared'}
     await db.launches.insert_one(dict(doc))
     return {'id': doc['id'], 'transaction': base64.b64encode(result.content).decode(), 'mint': body.mint}
 
@@ -80,5 +82,8 @@ async def confirm(launch_id: str, wallet: str = Depends(user)):
     if hashlib.sha256(bytes(tx.message)).hexdigest() != row['message_hash']: raise HTTPException(422, 'Unexpected launch transaction.')
     hub, _ = await add_hub(row['mint'])
     await db.hubs.update_one({'address': row['mint']}, {'$set': {'created_by': wallet, 'description': row['metadata']['description'], 'logo': row['metadata']['image'], 'banner': row['metadata']['banner']}})
+    if row.get('agent_profile'):
+        from agents import attach_profile
+        await attach_profile(row['mint'], AgentProfile(**row['agent_profile']), wallet, 'mart-launch')
     await db.launches.update_one({'id': launch_id}, {'$set': {'status': 'confirmed'}})
     return {'address': hub['address']}

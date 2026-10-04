@@ -19,13 +19,35 @@ export const FAQ_ITEMS = [
   { id: 'unclaimed', question: 'What is an Unclaimed Token?', answer: 'A token that has a MART Token Hub but has not yet been officially claimed and verified. Adding a token does not make the person who added it the official owner. A legitimate, verifiable token authority can claim the Hub later.' },
 ];
 
+const AGENT_DOCS = [
+  {
+    slug: 'ecosystem-agents', title: 'Ecosystem Agents', label: 'AN OPTIONAL ADDITION', summary: 'Creator-defined agents, integrated into the token—not a separate destination.',
+    sections: [
+      { title: 'Choose it at the start', paragraphs: ['Launch and Add Token each include an optional Ecosystem agent section. Leave it off for a token without an agent, or select its name, role, provider, model, mission, and proposed allocation. Model selection belongs to the creator form, not the public Token Hub.', 'The selected profile is fixed once attached. Private operating instructions are not returned by the public profile endpoint.'] },
+      { title: 'A breakdown alongside the chart', paragraphs: ['A Token Hub shows the price chart alongside the agent profile, public configuration activity, proposed treasury allocation, and compute status. The original Trade, Market, Events, and Community sections remain underneath.', 'A token with no configured agent is clearly marked as such. MART does not invent agent decisions, balances, or activity.'] },
+      { title: 'New tokens and existing tokens', items: ['New launch: the profile is saved with the launch request, then attached only after the creator’s exact transaction is finalized successfully on Solana.', 'Existing token: adding a token without an agent stays public. Attaching an agent requires a signed-in wallet and a fresh on-chain metadata update-authority check.', 'Program-controlled or renounced metadata authority: an external token cannot attach an agent through the current self-service import check. A confirmed original MART launch uses its verified launch provenance instead.', 'Re-importing a token without an agent does not remove an existing profile. Re-importing never replaces its selected configuration.'] },
+      { title: 'Current availability', notice: 'Profile configuration is available. AI execution, funded compute credits, agent treasury custody, and autonomous transactions are not connected.', paragraphs: ['Choosing a model is not a paid AI call or a wallet permission. Proposed allocation percentages do not distribute funds. Future execution needs a separate, explicitly funded and bounded runtime.'] },
+    ],
+  },
+  {
+    slug: 'agent-compute', title: 'Agent Compute', label: 'PROPOSED NEXT PHASE', summary: 'A practical path from a creator profile to an operating agent, with visible costs and firm limits.',
+    sections: [
+      { title: 'What compute means', paragraphs: ['Compute credits would pay for model inference, approved external tools, and the worker time needed to run an agent. They are not the token price, liquidity, staking balance, or an investment return.', 'The recommended first version uses hosted model APIs and bounded workers. Owning GPUs or adding a decentralized GPU network is not required to start. This is a proposal, not an active billing system.'] },
+      { title: 'Fund each token separately', items: ['Maintain a per-token USD-denominated credit ledger, separate from treasury funds. Every deposit and debit has an auditable reference.', 'Use creator top-ups first. Add an opt-in share of creator fees only if the actual launch program and fee recipient support it.', 'Imported tokens do not automatically send trading fees to MART. They need explicit top-ups or a separately authorized, verifiable fee-routing arrangement.', 'If accepting SOL, confirm deposits once and convert at a fresh trusted SOL/USD quote. Wait if a reliable price is unavailable; never guess a credit amount.'] },
+      { title: 'A bounded execution cycle', items: ['A scheduler or event queues a job only for enabled agents with enough credits.', 'Reserve the maximum permitted run cost atomically before calling a model. Enforce per-run, daily, tool, token, and concurrency limits.', 'Load the public token context and private creator instructions. Allow only approved tools and validate structured proposals.', 'Record the actual model/tool usage, settle the charge, release unused reservations, and publish a concise activity summary with sources—not private internal reasoning.', 'Pause on insufficient funds, stale data, errors, or policy violations. Resume only under explicit, funded rules. Retries must not double-charge.'] },
+      { title: 'Treasury safety is separate', paragraphs: ['Start with analysis, draft posts, and event suggestions. Require human approval for any financial action.', 'If financial automation is later enabled, put deterministic spending rules in front of an isolated signer: allowlisted destinations, maximum amounts, reserve floors, rate limits, and a kill switch. The model never receives a treasury private key. A model proposal is not authorization.'] },
+      { title: 'Suggested implementation order', items: ['Phase 1: one selected model, creator-funded credits, usage ledger, manually triggered research, and public run summaries.', 'Phase 2: scheduled/event-triggered jobs, memory, budget alerts, pause/resume, and community content proposals.', 'Phase 3: optional verified fee routing and narrowly approved on-chain actions after independent security review.'] },
+    ],
+  },
+];
+
 export const DOCS = [
   {
     slug: 'introduction', title: 'Introduction', label: 'START HERE', summary: 'A practical guide to building a world around your token.',
     sections: [
       { title: 'A market built around every token.', paragraphs: ['MART is a Solana token launchpad and token ecosystem platform. It connects trading, token-denominated commerce, events, and community around a single token identity.', 'Start by exploring a Token Hub, adding an existing token, or configuring a new launch. You can browse without connecting a wallet. Signing in is required to post, list items, or manage your activity.'] },
       { title: 'Choose your starting point', items: ['Explore: discover existing Token Hubs and open their Market, Trade, Events, or Community sections.', 'Launch: connect your wallet, configure the token, review fees, and sign the creation transaction. A Hub is created after on-chain confirmation.', 'Add Token: paste the mint address of a compatible existing Solana token. An existing Hub opens automatically if it has already been added.'] },
-      { title: 'Technical implementation', paragraphs: ['MART is the ecosystem layer, not a replacement token or trading engine. New token creation currently uses Pump.fun infrastructure through PumpPortal’s non-custodial local transaction integration. Trading can open the appropriate Pump.fun experience; charts and market snapshots come from DexScreener.', 'Your wallet signs the transaction. The resulting Solana mint address becomes the canonical identity in MART. Adding a Hub does not mint a duplicate token.'] },
+      { title: 'Technical implementation', paragraphs: ['MART is the ecosystem layer, not a replacement token or trading engine. New token creation currently uses Pump.fun infrastructure through PumpPortal’s non-custodial local transaction integration. Trading opens the appropriate Pump.fun experience. Native candle history comes from GeckoTerminal; market snapshots and external chart links use DexScreener.', 'Your wallet signs the transaction. The resulting Solana mint address becomes the canonical identity in MART. Adding a Hub does not mint a duplicate token.'] },
       { title: 'Know what is available', paragraphs: ['Public data providers can be rate limited. A missing chart or temporarily unavailable market value is not a zero balance or a successful transaction. NFT minting, indexed NFT discovery, and atomic NFT sales remain unavailable until their required services are configured.'] },
     ],
   },
@@ -45,6 +67,7 @@ export const DOCS = [
       { title: 'Manage an official Hub', paragraphs: ['A verified authority wallet can edit official Hub information and publish events. Authority is re-checked for sensitive changes. Community members can participate without becoming official Hub owners.'] },
     ],
   },
+  ...AGENT_DOCS,
   {
     slug: 'markets', title: 'Markets', label: 'THE HEART OF MART', summary: 'Products priced in the token. Activity rooted in its community.',
     sections: [
