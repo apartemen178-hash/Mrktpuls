@@ -1,0 +1,135 @@
+{
+  "project_name": "MART with AI Agent Enhancement",
+  "tagline": "A market built around every token — now with AI Autonomous Agent profile & hub strategy.",
+  "subheadline": "Launch on Pump.fun. Build your market on MART. Configure AI Agents for every token.",
+  "enhancement_notice": "Additive feature guidelines for MART. Preserves core visual style (Deep Obsidian #080B0D, Emerald #00EFA0, JetBrains Mono, Outfit heading font) and existing routes.",
+  "theme_strategy": {
+    "theme_mode": "dark",
+    "rationale": "Tactical Solana terminal dark mode (#080b0d canvas, #101517 surface) with Emerald (#00efa0) accents and hairline dark borders (#232b2d).",
+    "forbidden_colors": ["#7351B7", "#1B93A4", "generic purple gradients"],
+    "contrast_standard": "APCA 65+ / WCAG AA 4.5:1 text readability",
+    "surface_treatment": "Tactical dark glass and semi-solid obsidian panels with 1px border (#232b2d or #294934). Never fully transparent."
+  },
+  "brand_identity": {
+    "wordmark": "MART",
+    "wordmark_style": "Geometric bold 'MART' with dot matrix slash green mark",
+    "positioning": "Ecosystem token hub with optional AI Autonomous Agent module (Agency Pad style coin breakdown, agent profile, model selector, agent capabilities, treasury split)."
+  },
+  "typography": {
+    "font_family_heading": "Outfit, sans-serif",
+    "font_family_body": "IBM Plex Sans, sans-serif",
+    "font_family_mono": "JetBrains Mono, monospace",
+    "scale": {
+      "hero_h1": "text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight",
+      "section_h2": "text-2xl sm:text-3xl lg:text-4xl font-extrabold",
+      "sub_h3": "text-xl sm:text-2xl font-bold",
+      "card_h4": "text-lg sm:text-xl font-semibold",
+      "body": "text-sm text-zinc-300 leading-relaxed",
+      "mono_data": "font-mono text-xs sm:text-sm tracking-wider uppercase",
+      "overline": "text-xs font-mono font-bold tracking-[0.2em] text-emerald-400 uppercase"
+    }
+  },
+  "colors": {
+    "canvas_bg": "#080b0d",
+    "surface_primary": "#101517",
+    "surface_secondary": "#141a1d",
+    "surface_elevated": "#17221d",
+    "surface_glass": "rgba(8, 11, 13, 0.96)",
+    "border_subtle": "#232b2d",
+    "border_active": "#294934",
+    "accent_primary": "#00efa0",
+    "accent_primary_hover": "#36ffbc",
+    "accent_warning": "#e2bd78",
+    "accent_red": "#f3757a",
+    "text_primary": "#f5f6f5",
+    "text_secondary": "#8b9699",
+    "text_muted": "#657175"
+  },
+  "agent_feature_guidelines": {
+    "hub_tab_extension": {
+      "tab_name": "Agent",
+      "tab_route": "/token/:address/agent",
+      "navigation_integration": "Added as 5th tab alongside Trade, Market, Events, Community in hub-tabs navigation bar (hub-tab-agent).",
+      "compact_overview_badge": "A compact AI Agent status summary card / pill shown near token stats in Hub header when an Agent profile is configured or draft state exists."
+    },
+    "agency_breakdown_structure": {
+      "section_1_coin_identity_market": {
+        "title": "Token & Agent Overview",
+        "elements": [
+          "Coin identity badge with avatar, name, symbol, address, and live market cap / volume summary",
+          "Agent activation status pill: Draft, Configured, or Simulation Standby",
+          "Quick links to DexScreener, Solscan, and Agent config drawer/modal"
+        ]
+      },
+      "section_2_agent_profile_mission": {
+        "title": "Agent Profile & Persona",
+        "elements": [
+          "Agent Name, Persona Title (e.g., Market Sentiment Scout, Liquidity Sentinel, Meme Arbitrage Analyst)",
+          "Role & Core Mission statement textarea / markdown view",
+          "Autonomous Risk Tolerance slider/level selector (Conservative, Balanced, Aggressive, Degenerate)",
+          "Operating Mandate & Target Focus Tags (e.g., Meme Trend Detection, Holder Rewards Calculation, Social Hype Score)"
+        ]
+      },
+      "section_3_ai_model_selector": {
+        "title": "AI Model & Provider Configuration",
+        "elements": [
+          "Provider selector dropdown (OpenAI, Anthropic, DeepSeek, Llama / Local, ElizaOS / Autonomous Framework)",
+          "Model selector options (GPT-4o, Claude 3.5 Sonnet, DeepSeek R1, Llama 3.3 70B)",
+          "Temperature / Creativity setting, System Prompt customizer, Context Window indicator",
+          "Persisted draft configuration state in local storage / backend draft endpoint without live autonomous execution"
+        ]
+      },
+      "section_4_agent_capabilities": {
+        "title": "7-Stage Capability Pipeline",
+        "stages": [
+          {"stage": "Observe", "desc": "Scans on-chain liquidity, token holders, and DexScreener volume metrics."},
+          {"stage": "Research", "desc": "Analyzes social sentiment, Twitter mentions, and community posts."},
+          {"stage": "Think", "desc": "Synthesizes market data against configured agent risk profile and parameters."},
+          {"stage": "Strategy", "desc": "Generates proposed treasury actions, buyback signals, or event suggestions."},
+          {"stage": "Act", "desc": "Drafts proposed on-chain transaction or announcement payload for authority signature."},
+          {"stage": "Monitor", "desc": "Tracks execution feedback, slippage, and holder engagement impact."},
+          {"stage": "Learn", "desc": "Refines prompt context memory based on historical community reaction."}
+        ]
+      },
+      "section_5_treasury_token_breakdown": {
+        "title": "Agent Treasury & Token Allocation Breakdown",
+        "elements": [
+          "Treasury balance indicator ($TOKEN and SOL)",
+          "Allocation breakdown chart / progress bars: Community Rewards (30%), Liquidity Buffer (25%), Marketing Drops (20%), Buyback Reserve (15%), Operational Gas (10%)",
+          "Treasury address display with copy trigger"
+        ]
+      },
+      "section_6_preview_activity_states": {
+        "title": "Public Activity & Simulation Log",
+        "elements": [
+          "Simulated activity feed showing recent agent observations, research notes, and strategy logs",
+          "Draft action proposal card with Copy Payload and Simulate Action preview buttons",
+          "Activity log status badges: Observed, Drafted, Simulated"
+        ]
+      }
+    }
+  },
+  "component_instructions": {
+    "file_type": "JavaScript (.js and .jsx files)",
+    "data_test_ids": "Mandatory kebab-case data-testid on all interactive buttons, inputs, tabs, cards, dropdowns, and agent configuration controls.",
+    "agent_tabs_test_ids": [
+      "hub-tab-agent",
+      "agent-profile-card",
+      "agent-model-select",
+      "agent-provider-select",
+      "agent-mission-input",
+      "agent-save-config-btn",
+      "agent-capability-observe",
+      "agent-treasury-breakdown",
+      "agent-activity-feed"
+    ]
+  },
+  "universal_guidelines_for_main_agent": [
+    "Preserve all existing routes: Trade, Market, Events, Community, Launch, Explore, Wallet.",
+    "Add the AI Agent tab (/token/:address/agent) as an additive enhancement to Token Hub.",
+    "Maintain MART's established dark mode visual system: #080b0d canvas, #101517 surface, #00efa0 emerald accents, #232b2d borders.",
+    "Do NOT use transparent backgrounds without blur or semi-solid backing.",
+    "Use Radix / custom dropdowns and custom styled forms for model/provider selection.",
+    "Include kebab-case data-testid on all interactive elements across the agent module and cloned app."
+  ]
+}

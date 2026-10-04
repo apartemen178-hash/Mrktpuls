@@ -1,0 +1,12 @@
+import { Link } from 'react-router-dom';
+import { Wallet, ArrowUpRight, LockKeyhole, Store, CalendarDays, Users } from 'lucide-react';
+import { ALLOCATIONS } from './agentData';
+
+export const AgentBreakdown = ({ profile, token, ecosystem, onConfigure }) => <section className="agent-breakdown" data-testid="agent-treasury-breakdown">
+  <div className="agent-section-heading"><div><span className="agent-overline">THE RESOURCES</span><h2>Treasury & allocation</h2></div><span className="agent-neutral-badge" data-testid="agent-allocation-status">PROPOSED</span></div>
+  <div className="agent-treasury-balances"><div><span>SOL balance</span><strong data-testid="agent-sol-balance">— <small>SOL</small></strong></div><div><span>Token balance</span><strong data-testid="agent-token-balance">— <small>${token.symbol}</small></strong></div><span className="agent-treasury-disconnected" data-testid="agent-treasury-status"><Wallet size={15} />No treasury linked</span></div>
+  <div className="agent-allocation-bar" data-testid="agent-allocation-bar">{ALLOCATIONS.map(a => <span key={a.id} style={{ width: `${profile.allocation[a.id]}%`, backgroundColor: a.color }} title={`${a.name}: ${profile.allocation[a.id]}%`} />)}</div>
+  <div className="agent-allocation-legend">{ALLOCATIONS.map(a => <div key={a.id} data-testid={`agent-allocation-${a.id}`}><span style={{ backgroundColor: a.color }} /><span>{a.name}</span><strong>{profile.allocation[a.id]}%</strong></div>)}</div>
+  <div className="agent-section-foot"><span data-testid="agent-funds-notice"><LockKeyhole size={12} /> Planning only. No funds moved.</span><button className="text-link" data-testid="agent-edit-allocation" onClick={onConfigure}>Edit allocation<ArrowUpRight size={13} /></button></div>
+  <div className="agent-ecosystem"><span className="agent-overline">CONNECTED TO YOUR WORLD</span><div>{[[Store, 'listings', 'Market', 'market'], [CalendarDays, 'events', 'Events', 'events'], [Users, 'posts', 'Community', 'community']].map(([Icon, key, name, route]) => <Link key={key} to={`/token/${token.address}/${route}`} data-testid={`agent-ecosystem-${key}`}><Icon size={16} /><strong>{ecosystem?.[key] ?? 0}</strong><span>{name}</span><ArrowUpRight size={12} /></Link>)}</div></div>
+</section>;
